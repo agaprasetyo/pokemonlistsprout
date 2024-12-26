@@ -19,6 +19,7 @@ import id.angga.pokemonsprout.data.items.ItemsRepository
 import id.angga.pokemonsprout.data.moves.MovesRepository
 import id.angga.pokemonsprout.data.pokemon.PokemonRepository
 import id.angga.pokemonsprout.data.Result
+import id.angga.pokemonsprout.di.ViewModelFactoryProvider
 import id.angga.pokemonsprout.model.Ability
 import id.angga.pokemonsprout.model.EvolutionTrigger
 import id.angga.pokemonsprout.model.Item
@@ -115,7 +116,6 @@ class PokemonDetailsViewModel @AssistedInject constructor(
                         }
 
                         is Result.Error -> {
-                            // TODO: Pokemon only queried from local database which currently limited to original 151
                             println(result.exception)
                         }
                     }
