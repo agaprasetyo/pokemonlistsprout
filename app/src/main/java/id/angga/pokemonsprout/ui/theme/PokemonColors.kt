@@ -1,5 +1,7 @@
 package id.angga.pokemonsprout.ui.theme
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 class PokemonColors {
@@ -24,3 +26,22 @@ class PokemonColors {
         val Steel = Color(0xffaaaabb)
     }
 }
+
+val LocalPokemonTypeColorScheme = staticCompositionLocalOf {
+    PokemonTypeColorScheme(
+        primary = Color.Magenta,
+        surface = Color.Magenta,
+        onSurface = Color.Magenta,
+        surfaceVariant = Color.Magenta
+    )
+}
+
+@Immutable
+data class PokemonTypeColorScheme(
+    val primary: Color,
+    val surface: Color,
+    val onSurface: Color,
+    val surfaceVariant: Color,
+    val secondary: Color = primary,
+    val tertiary: Color = primary
+)

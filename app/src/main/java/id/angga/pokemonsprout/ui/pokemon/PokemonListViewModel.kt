@@ -27,6 +27,7 @@ class PokemonListViewModel @Inject constructor(
         private set
     private val pokemonList = mutableStateListOf<Pokemon>()
 
+    var favorites = mutableStateListOf<Pokemon>()
     var showFavorites by mutableStateOf(false)
     var typeFilter by mutableStateOf<Type?>(null)
 
@@ -39,6 +40,7 @@ class PokemonListViewModel @Inject constructor(
      */
     fun refresh() {
         viewModelScope.launch {
+            // TODO: Handle error/exception better
             when (val result = pokemonRepository.getAllPokemon()) {
                 is Result.Success -> {
                     pokemonList.addAll(result.data)
@@ -52,7 +54,28 @@ class PokemonListViewModel @Inject constructor(
                     throw result.exception
                 }
             }
+
+
         }
+    }
+
+    fun toggleFavorites() {
+        showFavorites = !showFavorites
+    }
+
+    fun filterByType(
+        typeToFilter: Type?
+    ) {
+        typeFilter = if (typeFilter != typeToFilter) typeToFilter else null
+
+        uiState = PokemonListUiState(
+            loading = false,
+            pokemon = if (typeFilter != null) {
+                pokemonList.filter { it.typeOfPokemon.contains(typeFilter.toString()) }
+            } else {
+                pokemonList.toList()
+            }
+        )
     }
 
 }

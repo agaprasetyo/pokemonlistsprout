@@ -19,10 +19,10 @@ import id.angga.pokemonsprout.model.PokemonAbility
 import id.angga.pokemonsprout.model.PokemonMove
 
 @Database(
-    version = 6,
+    version = 2,
     entities = [Pokemon::class, Move::class, Item::class, Ability::class],
     autoMigrations = [
-        AutoMigration(from = 1, to = 6),
+        AutoMigration(from = 1, to = 2),
     ]
 )
 @TypeConverters(Converters::class)

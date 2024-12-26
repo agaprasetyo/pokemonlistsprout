@@ -20,6 +20,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
     }
 
     buildTypes {
@@ -44,9 +50,7 @@ android {
     apollo {
         packageName.set("id.angga.pokemonsprout")
     }
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas".toString())
-    }
+
 
 }
 
@@ -95,4 +99,6 @@ dependencies {
 
     // Apollo
     implementation(libs.apollo.runtime)
+
+    implementation(libs.coil.compose)
 }
