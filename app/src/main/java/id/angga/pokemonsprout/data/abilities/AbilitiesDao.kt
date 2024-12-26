@@ -1,10 +1,12 @@
 package id.angga.pokemonsprout.data.abilities
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import id.angga.pokemonsprout.model.Ability
 
+@Dao
 interface AbilitiesDao {
 
     @Query("SELECT * FROM ability")

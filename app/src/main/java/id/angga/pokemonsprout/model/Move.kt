@@ -14,3 +14,8 @@ data class Move(
     val power: Int?,
     val accuracy: Int?
 )
+
+data class PokemonMove(
+    val id: Int,
+    val targetLevel: Int
+)

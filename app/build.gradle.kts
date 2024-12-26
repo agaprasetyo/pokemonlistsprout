@@ -44,6 +44,9 @@ android {
     apollo {
         packageName.set("id.angga.pokemonsprout")
     }
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas".toString())
+    }
 
 }
 

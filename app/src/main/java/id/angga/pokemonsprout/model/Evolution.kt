@@ -6,8 +6,13 @@ data class Evolution(
     val trigger: EvolutionTrigger = EvolutionTrigger.LevelUp,
     val itemId: Int = -1
 )
+
 enum class EvolutionTrigger(val value: Int) {
     LevelUp(1),
     UseItem(2),
     Trade(3);
+
+    companion object {
+        fun fromInt(value: Int) = entries.first { it.value == value }
+    }
 }
