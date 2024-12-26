@@ -1,6 +1,7 @@
 package id.angga.pokemonsprout.data.pokemon
 
 import id.angga.pokemonsprout.model.Pokemon
+import id.angga.pokemonsprout.data.Result
 
 interface PokemonRepository {
 
