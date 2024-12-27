@@ -414,6 +414,14 @@ private fun CardContent(
                 }
             }
         }
+        Box {
+            when (section) {
+                Sections.About -> PagerAboutSection(pokemon = pokemon, abilities = abilities)
+                Sections.BaseStats -> PagerBaseStatsSection(pokemon = pokemon)
+                Sections.Evolution -> PagerEvolutionSection(evolutions = evolutions)
+                else -> PagerMovesSection(moves = moves)
+            }
+        }
     }
 }
 
