@@ -6,4 +6,14 @@
     <string name="pager_label_evolution">Evolution</string>
     <string name="pager_label_moves">Moves</string>
 
+    <string name="pager_label_about_height">Height</string>
+    <string name="pager_label_about_weight">Weight</string>
+    <string name="pager_label_about_abilities">Abilities</string>
+    <string name="pager_label_about_hidden">Hidden</string>
+    <string name="pager_label_about_breeding">Breeding</string>
+    <string name="pager_label_about_gender">Gender</string>
+    <string name="pager_label_about_genderless">Genderless</string>
+    <string name="pager_label_about_egg_group">Egg groups</string>
+    <string name="pager_label_about_egg_cycles">Egg cycles</string>
+
 </resources>
