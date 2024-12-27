@@ -64,9 +64,6 @@ class PokemonDetailsViewModel @AssistedInject constructor(
     var abilities by mutableStateOf(listOf<PokemonDetailsAbilities>())
         private set
 
-    var isFavorite by mutableStateOf(false)
-        private set
-
     @AssistedFactory
     interface PokemonDetailsViewModelFactory {
         fun create(pokemon: Pokemon): PokemonDetailsViewModel
@@ -134,7 +131,6 @@ class PokemonDetailsViewModel @AssistedInject constructor(
                         }
 
                         is Result.Error -> {
-                            // TODO: Moves only queried from local database which currently limited to gen 1 moves
                             println(result.exception)
                         }
                     }
@@ -159,10 +155,6 @@ class PokemonDetailsViewModel @AssistedInject constructor(
             }.joinAll()
             abilities = ab.sortedBy { it.isHidden }
         }
-    }
-
-    fun toggleFavorite(pokemonId: Int) {
-
     }
 }
 

@@ -15,9 +15,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -86,8 +83,7 @@ import id.angga.pokemonsprout.ui.theme.mapTypeToSeedColor
 fun PokemonListScreenRoute(
     viewModel: PokemonListViewModel,
     onPokemonSelected: (Pokemon) -> Unit,
-    pastPokemonSelected: Int?,
-    onBackClick: () -> Unit
+    pastPokemonSelected: Int?
 ) {
     PokemonListScreen(
         loading = viewModel.uiState.loading,
@@ -99,8 +95,7 @@ fun PokemonListScreenRoute(
         onPokemonSelected = onPokemonSelected,
         onMenuItemClick = {
 
-        },
-        onBackClick = onBackClick
+        }
     )
 }
 
@@ -120,8 +115,7 @@ fun PokemonListScreen(
     typeFilter: Type? = null,
     pastPokemonSelected: Int? = null,
     onPokemonSelected: (Pokemon) -> Unit = {},
-    onMenuItemClick: (FilterMenuEvent) -> Unit = {},
-    onBackClick: () -> Unit = {}
+    onMenuItemClick: (FilterMenuEvent) -> Unit = {}
 ) {
     val listState = rememberLazyGridState()
     var filterMenuState by remember { mutableStateOf(FilterMenuState.Hidden) }
@@ -174,48 +168,6 @@ fun PokemonListScreen(
                 typeFilter = typeFilter,
                 onPokemonSelected = onPokemonSelected
             )
-            AnimatedVisibility(
-                visible = filterMenuState != FilterMenuState.Hidden,
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier = Modifier.matchParentSize()
-            ) {
-                Box(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.5f))
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { filterMenuState = FilterMenuState.Hidden }
-                        ),
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(WindowInsets.navigationBars.asPaddingValues())
-                    .padding(bottom = 24.dp)
-            ) {
-                if (filterMenuState != FilterMenuState.Hidden) {
-                    FilterMenu(
-                        showFavorites = showFavorites,
-                        typeFilter = typeFilter,
-                        menuState = filterMenuState,
-                        onMenuItemClick = {
-                            if (it is FilterMenuEvent.ShowTypes) {
-                                filterMenuState = FilterMenuState.Types
-                            } else {
-                                filterMenuState = FilterMenuState.Hidden
-                                onMenuItemClick(it)
-                            }
-                        },
-                    )
-                }
-                Spacer(Modifier.height(16.dp))
-            }
         }
     }
 }

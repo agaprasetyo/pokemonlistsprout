@@ -19,7 +19,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.HiltAndroidApp
 import id.angga.pokemonsprout.data.pokemon.SamplePokemonData
+import id.angga.pokemonsprout.ui.pokemon.PokemonDetailsScreenRoute
 import id.angga.pokemonsprout.ui.pokemon.PokemonListScreenRoute
+import id.angga.pokemonsprout.ui.pokemon.pokemonDetailsViewModel
 import id.angga.pokemonsprout.ui.theme.Material3Transitions
 
 @HiltAndroidApp
@@ -56,8 +58,24 @@ fun PokemonApp() {
                     pokemon = it
                     navController.navigate("details")
                 },
-                pastPokemonSelected = pastPokemonId,
-                onBackClick = { navController.popBackStack() }
+                pastPokemonSelected = pastPokemonId
+            )
+
+        }
+        composable(
+            route = "details",
+            enterTransition = { Material3Transitions.SharedZAxisEnterTransition },
+            exitTransition = { Material3Transitions.SharedZAxisExitTransition },
+        ) {
+            PokemonDetailsScreenRoute(
+                viewModel = hiltViewModel(),
+                detailsViewModel = pokemonDetailsViewModel(pokemon),
+                onBackClick = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("pokemonId", it)
+                    navController.popBackStack()
+                }
             )
         }
     }
