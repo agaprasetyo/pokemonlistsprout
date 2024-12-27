@@ -1,27 +1,15 @@
 package id.angga.pokemonsprout.ui.pokemon
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -32,22 +20,14 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
@@ -61,23 +41,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.materialkolor.PaletteStyle
-import id.angga.pokemonsprout.R
 import id.angga.pokemonsprout.data.pokemon.SamplePokemonData
 import id.angga.pokemonsprout.model.Pokemon
 import id.angga.pokemonsprout.model.Type
 import id.angga.pokemonsprout.ui.common.Pokeball
-import id.angga.pokemonsprout.ui.common.mapTypeToIcon
 import id.angga.pokemonsprout.ui.theme.PokemonAnggaSproutTheme
-import id.angga.pokemonsprout.ui.theme.getDynamicColorScheme
-import id.angga.pokemonsprout.ui.theme.mapDynamicPokemonColorScheme
-import id.angga.pokemonsprout.ui.theme.mapTypeToSeedColor
 
 @Composable
 fun PokemonListScreenRoute(
@@ -285,167 +257,6 @@ sealed class FilterMenuEvent {
     data class ToggleFavorites(val filterFavorites: Boolean) : FilterMenuEvent()
     data class ShowTypes(val showTypes: Boolean) : FilterMenuEvent()
     data class FilterTypes(val typeToFilter: Type) : FilterMenuEvent()
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun FilterMenu(
-    modifier: Modifier = Modifier,
-    showFavorites: Boolean,
-    typeFilter: Type? = null,
-    menuState: FilterMenuState,
-    onMenuItemClick: (FilterMenuEvent) -> Unit = {},
-) {
-    AnimatedContent(
-        targetState = menuState,
-        transitionSpec = {
-            EnterTransition.None togetherWith ExitTransition.None using (SizeTransform(false))
-        },
-        label = "filterMenuTransition",
-        modifier = modifier.fillMaxWidth()
-    ) { targetState ->
-        if (targetState == FilterMenuState.Types) {
-            FlowRow(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            ) {
-                Type.entries.forEachIndexed { idx, type ->
-                    val selected = type == typeFilter
-
-                    val seedColor = mapTypeToSeedColor(types = listOf(type.toString()))
-                    val kolorScheme = getDynamicColorScheme(seedColor, PaletteStyle.Rainbow)
-                    val pokemonColorScheme = mapDynamicPokemonColorScheme(
-                        seedColor = seedColor,
-                        colorScheme = kolorScheme
-                    )
-
-                    FilterTypeItem(
-                        type = type,
-                        colors = if (selected) {
-                            ButtonDefaults.filledTonalButtonColors(
-                                containerColor = pokemonColorScheme.surface,
-                                contentColor = pokemonColorScheme.onSurface
-                            )
-                        } else {
-                            ButtonDefaults.filledTonalButtonColors()
-                        },
-                        selected = selected,
-                        index = idx,
-                        onClick = { onMenuItemClick(FilterMenuEvent.FilterTypes(type)) },
-                        modifier = Modifier.padding(horizontal = 4.dp)
-                    )
-                }
-            }
-        } else {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                FilterMenuItem(
-                    index = 0,
-                    onClick = { onMenuItemClick(FilterMenuEvent.ToggleFavorites(!showFavorites)) }
-                ) {
-                    Icon(
-                        imageVector = if (showFavorites) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(if (showFavorites) "Show all" else "Show favorites")
-                }
-                FilterMenuItem(
-                    index = 1,
-                    onClick = { onMenuItemClick(FilterMenuEvent.ShowTypes(true)) }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_genetics),
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(if (typeFilter != null) "Filtered by $typeFilter" else "All types")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun AnimatedVisibilityScope.FilterMenuItem(
-    modifier: Modifier = Modifier,
-    index: Int,
-    onClick: () -> Unit = {},
-    content: @Composable RowScope.() -> Unit = {}
-) {
-    FilledTonalButton(
-        contentPadding = PaddingValues(horizontal = 18.dp, vertical = 8.dp),
-        onClick = onClick,
-        modifier = modifier
-            .animateEnterExit(
-                enter = fadeIn(
-                    animationSpec = tween(
-                        durationMillis = 200,
-                        delayMillis = index * 15 + 60
-                    )
-                ) +
-                        slideInVertically(
-                            initialOffsetY = { it / 2 },
-                            animationSpec = tween(
-                                durationMillis = 240,
-                                delayMillis = index * 50 + 60
-                            )
-                        ),
-                exit = fadeOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) +
-                        slideOutVertically(targetOffsetY = { it / 2 }),
-                label = "filterMenuItemTransition"
-            )
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun AnimatedVisibilityScope.FilterTypeItem(
-    modifier: Modifier = Modifier,
-    type: Type,
-    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
-    selected: Boolean = false,
-    index: Int,
-    onClick: () -> Unit = {},
-) {
-    FilledTonalButton(
-        contentPadding = PaddingValues(start = 12.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-        onClick = onClick,
-        colors = colors,
-        modifier = modifier
-            .animateEnterExit(
-                enter = fadeIn(
-                    animationSpec = tween(
-                        durationMillis = 240,
-                        delayMillis = index * 15 + 60
-                    )
-                ) +
-                        slideInVertically(
-                            initialOffsetY = { it / 2 },
-                            animationSpec = tween(
-                                durationMillis = 150,
-                                delayMillis = index * 15 + 60
-                            )
-                        ),
-                exit = fadeOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)),
-                label = "{$type}TypeTransition"
-            )
-    ) {
-        Icon(
-            painter = painterResource(id = mapTypeToIcon(type)),
-            contentDescription = null,
-            modifier = Modifier
-                .size(18.dp)
-                .graphicsLayer { alpha = if (selected) 1f else 0.4f }
-        )
-        Spacer(Modifier.width(4.dp))
-        Text("$type")
-    }
 }
 
 @PreviewLightDark

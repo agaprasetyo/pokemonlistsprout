@@ -16,4 +16,11 @@
     <string name="pager_label_about_egg_group">Egg groups</string>
     <string name="pager_label_about_egg_cycles">Egg cycles</string>
 
+    <string name="pager_label_stat_HP">HP</string>
+    <string name="pager_label_stat_Attack">Attack</string>
+    <string name="pager_label_stat_defence">Defense</string>
+    <string name="pager_label_stat_sp_attack">Sp. Atk</string>
+    <string name="pager_label_stat_sp_def">Sp. Def</string>
+    <string name="pager_label_stat_speed">Speed</string>
+
 </resources>
