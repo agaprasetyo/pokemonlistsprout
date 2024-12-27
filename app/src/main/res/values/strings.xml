@@ -23,4 +23,7 @@
     <string name="pager_label_stat_sp_def">Sp. Def</string>
     <string name="pager_label_stat_speed">Speed</string>
 
+    <string name="pager_label_evolution_chain">Evolution chain</string>
+    <string name="pager_label_evolution_chain_empty">No evolutions found</string>
+
 </resources>
