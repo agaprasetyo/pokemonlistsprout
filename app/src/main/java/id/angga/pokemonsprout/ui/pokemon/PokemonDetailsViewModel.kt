@@ -86,6 +86,8 @@ class PokemonDetailsViewModel @AssistedInject constructor(
 
     fun refresh(incomingPokemon: Pokemon) {
         viewModelScope.launch {
+
+            movesRepository.getAllMoves()
             details = incomingPokemon
 
             val ev = mutableListOf<PokemonDetailsEvolutions>()
