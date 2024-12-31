@@ -5,12 +5,15 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.materialkolor.PaletteStyle
@@ -18,6 +21,7 @@ import com.materialkolor.ktx.contrastRatio
 import com.materialkolor.ktx.darken
 import com.materialkolor.ktx.lighten
 import com.materialkolor.rememberDynamicColorScheme
+import id.angga.pokemonsprout.model.MoveCategory
 import id.angga.pokemonsprout.model.Type
 
 private val DarkColorScheme = darkColorScheme(
@@ -157,5 +161,101 @@ fun mapDynamicPokemonColorScheme(
             secondary = colorScheme.primary,
             tertiary = colorScheme.secondary,
         )
+    }
+}
+
+@Composable
+fun MoveCategoryTheme(
+    category: MoveCategory,
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
+) {
+    val extendedCategoryColors =
+        mapCategoryToColorScheme(category = category, isDark = useDarkTheme)
+
+    CompositionLocalProvider(
+        LocalMoveCategoryColorScheme provides extendedCategoryColors,
+        LocalContentColor provides if (extendedCategoryColors.onSurface != Color.Unspecified) {
+            extendedCategoryColors.onSurface
+        } else {
+            contentColorFor(extendedCategoryColors.surface)
+        }
+    ) {
+        content()
+    }
+}
+
+object MoveCategoryTheme {
+    val colorScheme: MoveCategoryColorScheme
+        @Composable
+        get() = LocalMoveCategoryColorScheme.current
+}
+
+@Immutable
+data class MoveCategoryColorScheme(
+    val primary: Color,
+    val surface: Color,
+    val onSurface: Color,
+)
+
+val LocalMoveCategoryColorScheme = staticCompositionLocalOf {
+    MoveCategoryColorScheme(
+        primary = Color.Magenta,
+        surface = Color.Magenta,
+        onSurface = Color.Magenta,
+    )
+}
+
+@Composable
+private fun mapCategoryToColorScheme(
+    category: MoveCategory,
+    isDark: Boolean
+): MoveCategoryColorScheme {
+    if (!isDark) {
+        return when (category) {
+            MoveCategory.Physical ->
+                MoveCategoryColorScheme(
+                    primary = PhysicalColors.primaryLight,
+                    surface = PhysicalColors.surfaceLight,
+                    onSurface = PhysicalColors.onSurfaceLight
+                )
+
+            MoveCategory.Special ->
+                MoveCategoryColorScheme(
+                    primary = SpecialColors.primaryLight,
+                    surface = SpecialColors.surfaceLight,
+                    onSurface = SpecialColors.onSurfaceLight
+                )
+
+            MoveCategory.Status ->
+                MoveCategoryColorScheme(
+                    primary = StatusColors.primaryLight,
+                    surface = StatusColors.surfaceLight,
+                    onSurface = StatusColors.onSurfaceLight
+                )
+        }
+    } else {
+        return when (category) {
+            MoveCategory.Physical ->
+                MoveCategoryColorScheme(
+                    primary = PhysicalColors.primaryDark,
+                    surface = PhysicalColors.surfaceDark,
+                    onSurface = PhysicalColors.onSurfaceDark
+                )
+
+            MoveCategory.Special ->
+                MoveCategoryColorScheme(
+                    primary = SpecialColors.primaryDark,
+                    surface = SpecialColors.surfaceDark,
+                    onSurface = SpecialColors.onSurfaceDark
+                )
+
+            MoveCategory.Status ->
+                MoveCategoryColorScheme(
+                    primary = StatusColors.primaryDark,
+                    surface = StatusColors.surfaceDark,
+                    onSurface = StatusColors.onSurfaceDark
+                )
+        }
     }
 }

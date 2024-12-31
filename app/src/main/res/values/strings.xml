@@ -26,4 +26,11 @@
     <string name="pager_label_evolution_chain">Evolution chain</string>
     <string name="pager_label_evolution_chain_empty">No evolutions found</string>
 
+    <string name="pager_label_moves_level">Lvl</string>
+    <string name="pager_label_moves_name">Name</string>
+    <string name="pager_label_moves_type">Type</string>
+    <string name="pager_label_moves_category">Cat</string>
+    <string name="pager_label_moves_power">Pwr</string>
+    <string name="pager_label_moves_accuracy">Acc</string>
+
 </resources>
